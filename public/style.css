@@ -1,0 +1,104 @@
+body {
+    background-color: black;
+    overflow: hidden;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+#tvSpace {
+    flex: 1;
+    width: 1700px;
+    height: 1000px;
+}
+
+#tv {
+    background-color: lightpink;
+    border: 5px solid pink;
+    width: 75%;
+    height: 888px;
+    position: relative;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 5vw;
+    z-index: 2;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#screen {   
+    background-color: black;
+    border: 5px solid gray;
+    width: 70%;
+    height: 75%;
+    position: relative;
+    border-radius: 1vw;
+    margin-right: -5%;  
+}
+
+#controls {
+    display: flex;
+    height: 80%;
+    position: relative;
+    border: 5px solid gray;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.knob {
+    background-color: yellow;
+    border: 5px solid gray;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: relative;
+}
+
+#button {
+    background-color: yellow;
+    border: 5px solid gray;
+    color: white;
+    width: 100px;
+    height: 80px;
+}
+
+#speaker {
+    background-color: gray;
+    width: 200px;
+    height: 200px;
+}
+
+.stand {
+    width: 100px;
+    height: 150px;
+    background-color: brown;
+    border: 5px solid burlywood;
+    border-radius: 1vw;
+    position: absolute;
+    z-index: 1;
+}
+
+.stand:nth-child(1) {
+    bottom: 70px;
+    left: 400px;
+}
+
+.stand:nth-child(2) {
+    bottom: 70px;
+    right: 400px;
+}
+
+.stand:nth-child(3) {
+    bottom: 120px;
+    left: 450px;
+    z-index: 0;
+}
+
+.stand:nth-child(4) {
+    bottom: 120px;
+    right: 450px;
+    z-index: 0;
+}
