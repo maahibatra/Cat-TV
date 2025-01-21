@@ -16,7 +16,7 @@ function drawTV() {
     const aspectRatio = 3 / 2;
     let tvWidth, tvHeight;
 
-    if(canvasWidth / canvasHeight > aspectRatio) {
+    if (canvasWidth / canvasHeight > aspectRatio) {
         tvHeight = canvasHeight * 0.7;
         tvWidth = tvHeight * aspectRatio;
     } else {
@@ -30,7 +30,7 @@ function drawTV() {
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-    ctx.fillStyle = "lightpink";
+    ctx.fillStyle = "#e0748e";
     ctx.beginPath();
     ctx.roundRect(tvX, tvY, tvWidth, tvHeight, tvRadius);
     ctx.closePath();
@@ -42,7 +42,7 @@ function drawTV() {
     const screenY = tvY + (tvHeight - screenHeight) / 2;
     const screenRadius = screenHeight * 0.07;
 
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#14090d";
     ctx.beginPath();
     ctx.roundRect(screenX, screenY, screenWidth, screenHeight, screenRadius);
     ctx.closePath();
@@ -54,13 +54,12 @@ function drawTV() {
     const knobSize = tvWidth / 20;
     const knobRadius = Math.PI * 2;
 
-    ctx.fillStyle = "yellow";
+    ctx.fillStyle = "#8f4050";
     ctx.beginPath();
     ctx.arc(knobX, knobY1, knobSize, 0, knobRadius);
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = "yellow";
     ctx.beginPath();
     ctx.arc(knobX, knobY2, knobSize, 0, knobRadius);
     ctx.closePath();
@@ -72,19 +71,19 @@ function drawTV() {
     const buttonHeight = tvHeight / 15;
     const buttonRadius = buttonHeight * 0.1;
 
-    ctx.fillStyle = "yellow";
+    ctx.fillStyle = "#7a3745";
     ctx.beginPath();
     ctx.roundRect(buttonX, buttonY, buttonWidth, buttonHeight, buttonRadius);
     ctx.closePath();
     ctx.fill();
-    
+
     const speakerX = tvX + tvWidth / 1.205;
     const speakerY = tvY + tvHeight * 0.685;
     const speakerWidth = tvWidth / 8;
     const speakerHeight = tvHeight / 6.8;
     const speakerRadius = speakerHeight * 0.05;
 
-    ctx.fillStyle = "gray";
+    ctx.fillStyle = "#24171c";
     ctx.beginPath();
     ctx.roundRect(speakerX, speakerY, speakerWidth, speakerHeight, speakerRadius);
     ctx.closePath();
@@ -102,7 +101,7 @@ function drawTV() {
     const standX4 = tvX + tvWidth / 1.17;
     const standY = tvY + tvHeight;
 
-    ctx.fillStyle = "gray";
+    ctx.fillStyle = "#3d1822";
     ctx.beginPath();
     ctx.moveTo(standX3, standY);
     ctx.quadraticCurveTo(standX3 - standTopWidth / 3, standY + standHeight * 1.3, standX3 + standTopWidth / 1.7, standY);
@@ -115,7 +114,7 @@ function drawTV() {
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = "brown";
+    ctx.fillStyle = "#471f2a";
     ctx.beginPath();
     ctx.moveTo(standX, standY);
     ctx.quadraticCurveTo(standX - standTopWidth / 3, standY + standHeight * 2.2, standX + standTopWidth, standY);
@@ -134,7 +133,7 @@ function drawTV() {
     const earX2 = tvX + tvWidth / 1.1;
     const earY = tvY;
 
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "#7a3745";
     ctx.beginPath();
     ctx.moveTo(earX, earY);
     ctx.quadraticCurveTo(earX + earWidth / 10, earY - earHeight, earX + earWidth, earY);
@@ -155,7 +154,7 @@ function drawTV() {
     const whiskerSpacing = tvHeight / 15;
     const whiskerSpacing2 = tvHeight / 20;
 
-    ctx.fillStyle = "gray";
+    ctx.fillStyle = "#5e464b";
     ctx.save();
     ctx.translate(whiskerX, whiskerY - whiskerSpacing);
     ctx.rotate(Math.PI / 22);
