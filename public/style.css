@@ -7,3 +7,9 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+#coords {
+    position: absolute;
+    pointer-events: none;
+    color: white;
+}
