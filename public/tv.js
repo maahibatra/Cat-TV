@@ -38,32 +38,100 @@ function drawTV() {
 
     const screenWidth = tvWidth * 0.7;
     const screenHeight = tvHeight * 0.7;
-    const screenX = tvX + (tvWidth - screenWidth) / 3.5;
+    const screenX = tvX + (tvWidth - screenWidth) / 4;
     const screenY = tvY + (tvHeight - screenHeight) / 2;
-    const screenRadius = screenHeight * 0.07;
+    const curveOffset = screenWidth * 0.07;
 
     ctx.fillStyle = "#14090d";
     ctx.beginPath();
-    ctx.roundRect(screenX, screenY, screenWidth, screenHeight, screenRadius);
+    ctx.moveTo(screenX + curveOffset, screenY);
+    ctx.quadraticCurveTo(screenX + screenWidth / 2, screenY - curveOffset, screenX + screenWidth - curveOffset, screenY);
+    ctx.quadraticCurveTo(screenX + screenWidth + curveOffset, screenY + screenHeight / 2, screenX + screenWidth - curveOffset, screenY + screenHeight);
+    ctx.quadraticCurveTo(screenX + screenWidth / 2, screenY + screenHeight + curveOffset, screenX + curveOffset, screenY + screenHeight);
+    ctx.quadraticCurveTo(screenX - curveOffset, screenY + screenHeight / 2, screenX + curveOffset, screenY);
     ctx.closePath();
     ctx.fill();
 
     const knobX = tvX + tvWidth / 1.12;
-    const knobY1 = tvY + tvHeight * 0.24;
+    const knobY = tvY + tvHeight * 0.24;
     const knobY2 = tvY + tvHeight * 0.44;
     const knobSize = tvWidth / 20;
     const knobRadius = Math.PI * 2;
 
+    const lineAngle = Math.PI;
+    const lineWidth = knobSize / 20;
+    const lineStartX = knobX + knobSize / 1.7 * Math.cos(lineAngle);
+    const lineStartY = knobY + knobSize / 1.7 * Math.sin(lineAngle);
+    const lineEndX = knobX + knobSize * Math.cos(lineAngle);
+    const lineEndY = knobY + knobSize * Math.sin(lineAngle);
+    const lineStartY2 = knobY2 + knobSize / 1.7 * Math.sin(lineAngle);
+    const lineEndY2 = knobY2 + knobSize * Math.sin(lineAngle);
+
+    const dotDistance = knobSize * 1.2;
+    const minX = knobX - dotDistance;
+    const maxX = knobX + dotDistance;
+    const dotY = knobY;
+    const dotSize = knobSize / 15;
+
+    const numLines = 12;
+    const lineAngleStep = Math.PI * 2 / numLines;
+
     ctx.fillStyle = "#8f4050";
     ctx.beginPath();
-    ctx.arc(knobX, knobY1, knobSize, 0, knobRadius);
+    ctx.arc(knobX, knobY, knobSize, 0, knobRadius);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = "#14090d";
+    ctx.beginPath();
+    ctx.moveTo(lineStartX, lineStartY);
+    ctx.lineTo(lineEndX, lineEndY);
+    ctx.closePath();
+    ctx.stroke();
+
+    ctx.fillStyle = "#14090d";
+    ctx.beginPath();
+    ctx.arc(minX, dotY, dotSize, 0, Math.PI * 2);
     ctx.closePath();
     ctx.fill();
 
     ctx.beginPath();
+    ctx.arc(maxX, dotY, dotSize, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.fill();
+
+    for(let i = 0; i < numLines; i++) {
+        const angle = i * lineAngleStep;
+
+        const lineStartX = knobX + knobSize * 1.1 * Math.cos(angle);
+        const lineStartY = knobY2 + knobSize * 1.1 * Math.sin(angle);
+
+        const lineEndX = knobX + knobSize * 1.2 * Math.cos(angle);
+        const lineEndY = knobY2 + knobSize * 1.2 * Math.sin(angle);
+
+        ctx.lineWidth = knobSize / 20;
+        ctx.strokeStyle = "#14090d";
+        ctx.beginPath();
+        ctx.moveTo(lineStartX, lineStartY);
+        ctx.lineTo(lineEndX, lineEndY);
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    ctx.fillStyle = "#8f4050";
+    ctx.beginPath();
     ctx.arc(knobX, knobY2, knobSize, 0, knobRadius);
     ctx.closePath();
     ctx.fill();
+
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = "#14090d";
+    ctx.beginPath();
+    ctx.moveTo(lineStartX, lineStartY2);
+    ctx.lineTo(lineEndX, lineEndY2);
+    ctx.closePath();
+    ctx.stroke();
 
     const buttonX = tvX + tvWidth / 1.165;
     const buttonY = tvY + tvHeight * 0.57;
@@ -77,13 +145,40 @@ function drawTV() {
     ctx.closePath();
     ctx.fill();
 
+    ctx.fillStyle = "#14090d";
+    ctx.font = "bold " + (buttonHeight / 4) + "px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("ON/OFF", buttonX + buttonWidth / 2, buttonY + buttonHeight / 1.9);
+
     const speakerX = tvX + tvWidth / 1.205;
     const speakerY = tvY + tvHeight * 0.685;
     const speakerWidth = tvWidth / 8;
     const speakerHeight = tvHeight / 6.8;
     const speakerRadius = speakerHeight * 0.05;
+    
+    const speakerCanvas = document.createElement("canvas");
+    const speakerCtx = speakerCanvas.getContext("2d");
+    
+    speakerCanvas.width = speakerWidth / 25;
+    speakerCanvas.height = speakerHeight / 30;
+    if(speakerCanvas.width < 2 || speakerCanvas.height < 2) {
+        speakerCanvas.width = 2;
+        speakerCanvas.height = 2;
+    }
+
+    const patternX = speakerCanvas.width / 1.4;
+    const patternY = speakerCanvas.height / 1.4;
 
     ctx.fillStyle = "#24171c";
+    speakerCtx.fillRect(0, 0, patternX, patternY);
+    speakerCtx.fillRect(10, 0, patternX, patternY);
+    speakerCtx.fillRect(0, 10, patternX, patternY);
+    speakerCtx.fillRect(10, 10, patternX, patternY);
+
+    const speakerPattern = ctx.createPattern(speakerCanvas, "repeat");
+
+    ctx.fillStyle = speakerPattern;
     ctx.beginPath();
     ctx.roundRect(speakerX, speakerY, speakerWidth, speakerHeight, speakerRadius);
     ctx.closePath();
@@ -146,6 +241,19 @@ function drawTV() {
     ctx.closePath();
     ctx.fill();
 
+    ctx.fillStyle = "#592530";
+    ctx.beginPath();
+    ctx.moveTo(earX + earWidth / 7, earY);
+    ctx.quadraticCurveTo(earX + earWidth / 4, earY - earHeight / 1.7, earX + earWidth / 1.2, earY);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(earX2 - earWidth / 7, earY);
+    ctx.quadraticCurveTo(earX2 - earWidth / 4, earY - earHeight / 1.7, earX2 - earWidth / 1.2, earY);
+    ctx.closePath();
+    ctx.fill();
+
     const whiskerWidth = tvWidth / 10;
     const whiskerX = tvX - whiskerWidth + tvWidth / 45;
     const whiskerX2 = tvX + tvWidth - tvWidth / 45;
@@ -154,7 +262,7 @@ function drawTV() {
     const whiskerSpacing = tvHeight / 15;
     const whiskerSpacing2 = tvHeight / 20;
 
-    ctx.fillStyle = "#5e464b";
+    ctx.fillStyle = "#6b404a";
     ctx.save();
     ctx.translate(whiskerX, whiskerY - whiskerSpacing);
     ctx.rotate(Math.PI / 22);
