@@ -15,12 +15,14 @@ function resizeCanvas() {
     drawTV();
 }
 
+let tvX, tvY, tvWidth, tvHeight, buttonX, buttonY, buttonWidth, buttonHeight;
+let power = true;
+
 function drawTV() {
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
 
     const aspectRatio = 3 / 2;
-    let tvWidth, tvHeight;
 
     if (canvasWidth / canvasHeight > aspectRatio) {
         tvHeight = canvasHeight * 0.7;
@@ -30,8 +32,8 @@ function drawTV() {
         tvHeight = tvWidth / aspectRatio;
     }
 
-    const tvX = (canvasWidth - tvWidth) / 2;
-    const tvY = (canvasHeight - tvHeight) / 2;
+    tvX = (canvasWidth - tvWidth) / 2;
+    tvY = (canvasHeight - tvHeight) / 2;
     const tvRadius = tvHeight * 0.05;
     const strokeWidth = tvWidth / 120;
 
@@ -63,12 +65,17 @@ function drawTV() {
 
     ctx.save();
     ctx.clip();
-    ctx.drawImage(video, screenX, screenY - 30, screenWidth, screenHeight + 60);
 
-    ctx.globalCompositeOperator = "screen";
-    ctx.fillStyle = "#14090d";
-    ctx.globalAlpha = 0.2;
-    ctx.fillRect(screenX, screenY - 30, screenWidth, screenHeight + 60);
+    if(power) {
+        ctx.drawImage(video, screenX, screenY - 30, screenWidth, screenHeight + 60);
+        ctx.globalCompositeOperator = "screen";
+        ctx.fillStyle = "#14090d";
+        ctx.globalAlpha = 0.2;
+        ctx.fillRect(screenX, screenY - 30, screenWidth, screenHeight + 60);
+    } else {
+        ctx.fillStyle = "#14090d";
+        ctx.fill();
+    }
 
     ctx.globalAlpha = 1;
     ctx.lineWidth = strokeWidth2;
@@ -163,10 +170,10 @@ function drawTV() {
     ctx.closePath();
     ctx.stroke();
 
-    const buttonX = tvX + tvWidth / 1.165;
-    const buttonY = tvY + tvHeight * 0.57;
-    const buttonWidth = tvWidth / 15;
-    const buttonHeight = tvHeight / 15;
+    buttonX = tvX + tvWidth / 1.165;
+    buttonY = tvY + tvHeight * 0.57;
+    buttonWidth = tvWidth / 15;
+    buttonHeight = tvHeight / 15;
     const buttonRadius = buttonHeight * 0.1;
 
     ctx.fillStyle = "#7a3745";
@@ -323,5 +330,17 @@ function drawTV() {
 
     requestAnimationFrame(drawTV);
 }
+
+canvas.addEventListener("click", function(e) {
+    const clickX = e.offsetX;
+    const clickY = e.offsetY;
+
+    if(clickX >= buttonX && clickX <= buttonX + buttonWidth && clickY >= buttonY && clickY <= buttonY + buttonHeight) {
+        console.log("button clicked");
+
+        power = !power;
+        drawTV();
+    }
+})
 
 resizeCanvas();
