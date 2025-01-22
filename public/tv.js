@@ -1,6 +1,12 @@
 const canvas = document.getElementById("ctv");
 const ctx = canvas.getContext("2d");
 
+const video = document.createElement("video");
+video.src = "ctv1.mp4";
+video.loop = true;
+video.muted = true;
+video.play();
+
 window.addEventListener("resize", resizeCanvas);
 
 function resizeCanvas() {
@@ -27,6 +33,7 @@ function drawTV() {
     const tvX = (canvasWidth - tvWidth) / 2;
     const tvY = (canvasHeight - tvHeight) / 2;
     const tvRadius = tvHeight * 0.05;
+    const strokeWidth = tvWidth / 120;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -35,14 +42,17 @@ function drawTV() {
     ctx.roundRect(tvX, tvY, tvWidth, tvHeight, tvRadius);
     ctx.closePath();
     ctx.fill();
+    ctx.lineWidth = strokeWidth;
+    ctx.strokeStyle = "#14090d";
+    ctx.stroke();
 
     const screenWidth = tvWidth * 0.7;
     const screenHeight = tvHeight * 0.7;
     const screenX = tvX + (tvWidth - screenWidth) / 4;
     const screenY = tvY + (tvHeight - screenHeight) / 2;
     const curveOffset = screenWidth * 0.07;
+    const strokeWidth2 = screenWidth / 70;
 
-    ctx.fillStyle = "#14090d";
     ctx.beginPath();
     ctx.moveTo(screenX + curveOffset, screenY);
     ctx.quadraticCurveTo(screenX + screenWidth / 2, screenY - curveOffset, screenX + screenWidth - curveOffset, screenY);
@@ -50,7 +60,27 @@ function drawTV() {
     ctx.quadraticCurveTo(screenX + screenWidth / 2, screenY + screenHeight + curveOffset, screenX + curveOffset, screenY + screenHeight);
     ctx.quadraticCurveTo(screenX - curveOffset, screenY + screenHeight / 2, screenX + curveOffset, screenY);
     ctx.closePath();
-    ctx.fill();
+
+    ctx.save();
+    ctx.clip();
+    ctx.drawImage(video, screenX, screenY - 30, screenWidth, screenHeight + 60);
+
+    ctx.globalCompositeOperator = "screen";
+    ctx.fillStyle = "#14090d";
+    ctx.globalAlpha = 0.2;
+    ctx.fillRect(screenX, screenY - 30, screenWidth, screenHeight + 60);
+
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = strokeWidth2;
+    ctx.beginPath();
+    ctx.moveTo(screenX + curveOffset, screenY);
+    ctx.quadraticCurveTo(screenX + screenWidth / 2, screenY - curveOffset, screenX + screenWidth - curveOffset, screenY);
+    ctx.quadraticCurveTo(screenX + screenWidth + curveOffset, screenY + screenHeight / 2, screenX + screenWidth - curveOffset, screenY + screenHeight);
+    ctx.quadraticCurveTo(screenX + screenWidth / 2, screenY + screenHeight + curveOffset, screenX + curveOffset, screenY + screenHeight);
+    ctx.quadraticCurveTo(screenX - curveOffset, screenY + screenHeight / 2, screenX + curveOffset, screenY);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
 
     const knobX = tvX + tvWidth / 1.12;
     const knobY = tvY + tvHeight * 0.24;
@@ -194,7 +224,7 @@ function drawTV() {
     const standX2 = tvX + tvWidth / 1.1;
     const standX3 = tvX + tvWidth / 6;
     const standX4 = tvX + tvWidth / 1.17;
-    const standY = tvY + tvHeight;
+    const standY = tvY + tvHeight + strokeWidth / 3;
 
     ctx.fillStyle = "#3d1822";
     ctx.beginPath();
@@ -226,7 +256,7 @@ function drawTV() {
     const earHeight = tvHeight / 3;
     const earX = tvX + tvWidth / 10;
     const earX2 = tvX + tvWidth / 1.1;
-    const earY = tvY;
+    const earY = tvY - strokeWidth / 2;
 
     ctx.fillStyle = "#7a3745";
     ctx.beginPath();
@@ -290,6 +320,8 @@ function drawTV() {
     ctx.rotate(Math.PI / 22);
     ctx.fillRect(0, 0, whiskerWidth, whiskerSize);
     ctx.restore();
+
+    requestAnimationFrame(drawTV);
 }
 
 resizeCanvas();
