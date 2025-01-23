@@ -15,6 +15,7 @@ const videos =[
     "ctv11.mp4",
     "ctv12.mp4",
 ];
+
 let currentVideo = 0;
 const video = document.createElement("video");
 video.src = "ctv1.mp4";
@@ -79,7 +80,7 @@ function drawTV() {
     ctx.closePath();
     ctx.fill();
     ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = "#14090d";
+    ctx.strokeStyle = "#2e1920";
     ctx.stroke();
 
     const screenWidth = tvWidth * 0.7;
@@ -225,7 +226,7 @@ function drawTV() {
     ctx.fill();
 
     ctx.fillStyle = "#14090d";
-    ctx.font = "bold " + (buttonHeight / 4) + "px Arial";
+    ctx.font = "bold " + (buttonHeight / 4) + "px 'Shantell Sans', serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText("POWER", buttonX + buttonWidth / 2, buttonY + buttonHeight / 1.9);

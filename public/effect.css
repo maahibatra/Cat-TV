@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --size: 20px;
+}
+
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    background: #0f0f0f;
+}
+
+.el {
+    background: conic-gradient(from 180deg at 50% 70%, #fad1d1 0deg, #e0748e 72deg, #f06a82 144deg, #d85c74 216deg, #f5427a 288deg, #fad1d1 1turn);
+    width: 100%; 
+    height: 100%; 
+    mask: radial-gradient(circle at 50% 50%, white 2px, transparent 2.5px) 50% 50% / var(--size) var(--size), url("https://assets.codepen.io/605876/noise-mask.png") 256px 50% / 256px 256px; 
+    mask-composite: intersect; 
+    animation: flicker 20s infinite linear;
+}
+
+@keyframes flicker {
+    to {
+      mask-position: 50% 50%, 0 50%;
+    }
+}
