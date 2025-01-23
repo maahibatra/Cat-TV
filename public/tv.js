@@ -22,6 +22,7 @@ video.src = "ctv1.mp4";
 video.loop = true;
 video.muted = true;
 video.autoplay = true;
+video.preload = "auto";
 video.playsInline = true;
 video.play();
 
