@@ -21,6 +21,7 @@ const video = document.createElement("video");
 video.src = "ctv1.mp4";
 video.loop = true;
 video.muted = true;
+video.autoplay = true;
 video.playsInline = true;
 video.play();
 
