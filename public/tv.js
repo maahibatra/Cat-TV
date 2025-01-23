@@ -1,6 +1,21 @@
 const canvas = document.getElementById("ctv");
 const ctx = canvas.getContext("2d");
 
+const videos =[
+    "ctv1.mp4",
+    "ctv2.mp4",
+    "ctv3.mp4",
+    "ctv4.mp4",
+    "ctv5.mp4",
+    "ctv6.mp4",
+    "ctv7.mp4",
+    "ctv8.mp4",
+    "ctv9.mp4",
+    "ctv10.mp4",
+    "ctv11.mp4",
+    "ctv12.mp4",
+];
+let currentVideo = 0;
 const video = document.createElement("video");
 video.src = "ctv1.mp4";
 video.loop = true;
@@ -15,7 +30,8 @@ function resizeCanvas() {
     drawTV();
 }
 
-let tvX, tvY, tvWidth, tvHeight, buttonX, buttonY, buttonWidth, buttonHeight;
+let tvX, tvY, tvWidth, tvHeight, knobX, knobY2, knobSize, numLines, buttonX, buttonY, buttonWidth, buttonHeight;
+let lineAngle2 = Math.PI;
 let power = true;
 
 function drawTV() {
@@ -67,7 +83,7 @@ function drawTV() {
     ctx.clip();
 
     if(power) {
-        ctx.drawImage(video, screenX, screenY - 30, screenWidth, screenHeight + 60);
+        ctx.drawImage(video, screenX, screenY - screenHeight / 20, screenWidth, screenHeight + screenHeight / 10);
         ctx.globalCompositeOperator = "screen";
         ctx.fillStyle = "#14090d";
         ctx.globalAlpha = 0.2;
@@ -89,20 +105,22 @@ function drawTV() {
     ctx.stroke();
     ctx.restore();
 
-    const knobX = tvX + tvWidth / 1.12;
+    knobX = tvX + tvWidth / 1.12;
     const knobY = tvY + tvHeight * 0.24;
-    const knobY2 = tvY + tvHeight * 0.44;
-    const knobSize = tvWidth / 20;
+    knobY2 = tvY + tvHeight * 0.44;
+    knobSize = tvWidth / 20;
     const knobRadius = Math.PI * 2;
 
-    const lineAngle = Math.PI;
+    const lineAngle = Math.PI * 1.75;
     const lineWidth = knobSize / 20;
     const lineStartX = knobX + knobSize / 1.7 * Math.cos(lineAngle);
     const lineStartY = knobY + knobSize / 1.7 * Math.sin(lineAngle);
     const lineEndX = knobX + knobSize * Math.cos(lineAngle);
     const lineEndY = knobY + knobSize * Math.sin(lineAngle);
-    const lineStartY2 = knobY2 + knobSize / 1.7 * Math.sin(lineAngle);
-    const lineEndY2 = knobY2 + knobSize * Math.sin(lineAngle);
+    const lineStartX2 = knobX + knobSize / 1.7 * Math.cos(lineAngle2);
+    const lineStartY2 = knobY2 + knobSize / 1.7 * Math.sin(lineAngle2);
+    const lineEndX2 = knobX + knobSize * Math.cos(lineAngle2);
+    const lineEndY2 = knobY2 + knobSize * Math.sin(lineAngle2);
 
     const dotDistance = knobSize * 1.2;
     const minX = knobX - dotDistance;
@@ -110,7 +128,7 @@ function drawTV() {
     const dotY = knobY;
     const dotSize = knobSize / 15;
 
-    const numLines = 12;
+    numLines = 12;
     const lineAngleStep = Math.PI * 2 / numLines;
 
     ctx.fillStyle = "#8f4050";
@@ -165,8 +183,8 @@ function drawTV() {
     ctx.lineWidth = lineWidth;
     ctx.strokeStyle = "#14090d";
     ctx.beginPath();
-    ctx.moveTo(lineStartX, lineStartY2);
-    ctx.lineTo(lineEndX, lineEndY2);
+    ctx.moveTo(lineStartX2, lineStartY2);
+    ctx.lineTo(lineEndX2, lineEndY2);
     ctx.closePath();
     ctx.stroke();
 
@@ -186,7 +204,7 @@ function drawTV() {
     ctx.font = "bold " + (buttonHeight / 4) + "px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("ON/OFF", buttonX + buttonWidth / 2, buttonY + buttonHeight / 1.9);
+    ctx.fillText("POWER", buttonX + buttonWidth / 2, buttonY + buttonHeight / 1.9);
 
     const speakerX = tvX + tvWidth / 1.205;
     const speakerY = tvY + tvHeight * 0.685;
@@ -332,15 +350,29 @@ function drawTV() {
 }
 
 canvas.addEventListener("click", function(e) {
+    const mouseX = e.offsetX;
+    const mouseY = e.offsetY;
+
+    if(mouseX >= knobX - knobSize && mouseX <= knobX + knobSize && mouseY >= knobY2 - knobSize && mouseY <= knobY2 + knobSize) {
+        lineAngle2 += Math.PI * 2 / numLines;
+        if(lineAngle2 >= Math.PI * 2) {
+            lineAngle2 -= Math.PI * 2
+        }
+
+        currentVideo = (currentVideo + 1) % videos.length;
+        video.src = videos[currentVideo];
+        video.play();
+    }
+});
+
+canvas.addEventListener("click", function(e) {
     const clickX = e.offsetX;
     const clickY = e.offsetY;
 
     if(clickX >= buttonX && clickX <= buttonX + buttonWidth && clickY >= buttonY && clickY <= buttonY + buttonHeight) {
-        console.log("button clicked");
-
         power = !power;
         drawTV();
     }
-})
+});
 
 resizeCanvas();
