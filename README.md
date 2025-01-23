@@ -38,3 +38,8 @@ Just for show; appreciate the pattern please, it took me way too long-
 
 ### Cat Ears, Whiskers, and Stand:
 All just accessories, hope you like them!
+
+## Usage of AI - AI has been used in the creation of this project, specifically ChatGPT.
+
+- AI has been used to help me figure out how canvas works because I had never even touched this before.
+- AI has helped in troubleshooting errors.
