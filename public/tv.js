@@ -22,6 +22,12 @@ video.loop = true;
 video.muted = true;
 video.play();
 
+const powerClick = new Audio("powerClick.mp3");
+const knobClick = new Audio("knobClick.mp3");
+
+let powerImage = new Image();
+powerImage.src = "powerImage.png";
+
 window.addEventListener("resize", resizeCanvas);
 
 function resizeCanvas() {
@@ -33,6 +39,18 @@ function resizeCanvas() {
 let tvX, tvY, tvWidth, tvHeight, knobX, knobY2, knobSize, numLines, buttonX, buttonY, buttonWidth, buttonHeight;
 let lineAngle2 = Math.PI;
 let power = true;
+let fadeOpacity = 1;
+let fadingIn = false;
+
+function fadeIn() {
+    if(fadeOpacity < 1) {
+        fadeOpacity += 0.01;
+        drawTV();
+        requestAnimationFrame(fadeIn);
+    } else {
+        fadingIn = false;
+    }
+}
 
 function drawTV() {
     const canvasWidth = canvas.width;
@@ -83,11 +101,17 @@ function drawTV() {
     ctx.clip();
 
     if(power) {
-        ctx.drawImage(video, screenX, screenY - screenHeight / 20, screenWidth, screenHeight + screenHeight / 10);
+        if(fadeOpacity < 1) {
+            ctx.globalAlpha = fadeOpacity;
+            ctx.drawImage(powerImage, screenX, screenY - screenHeight / 20, screenWidth, screenHeight + screenHeight / 10);
+        } else {
+            ctx.globalAlpha = 1;
+            ctx.drawImage(video, screenX, screenY - screenHeight / 20, screenWidth, screenHeight + screenHeight / 10);
+        }
         ctx.globalCompositeOperator = "screen";
         ctx.fillStyle = "#14090d";
         ctx.globalAlpha = 0.2;
-        ctx.fillRect(screenX, screenY - 30, screenWidth, screenHeight + 60);
+        ctx.fillRect(screenX, screenY - screenHeight / 20, screenWidth, screenHeight + screenHeight / 10);
     } else {
         ctx.fillStyle = "#14090d";
         ctx.fill();
@@ -362,6 +386,9 @@ canvas.addEventListener("click", function(e) {
         currentVideo = (currentVideo + 1) % videos.length;
         video.src = videos[currentVideo];
         video.play();
+
+        knobClick.currentTime = 0;
+        knobClick.play();
     }
 });
 
@@ -371,7 +398,12 @@ canvas.addEventListener("click", function(e) {
 
     if(clickX >= buttonX && clickX <= buttonX + buttonWidth && clickY >= buttonY && clickY <= buttonY + buttonHeight) {
         power = !power;
-        drawTV();
+        fadingIn = true;
+        fadeOpacity = 0;
+        fadeIn();
+
+        powerClick.currentTime = 0;
+        powerClick.play();
     }
 });
 
