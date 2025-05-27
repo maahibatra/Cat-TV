@@ -3,7 +3,7 @@ body {
     font-family: "Shantell Sans", serif;
 }
 
-#guide {
+.btn {
     background-color: #e0748e;
     color: #14090d;
     border: 0.3vw solid #2e1920;
@@ -16,6 +16,10 @@ body {
     cursor: pointer;
     font-family: "Shantell Sans", serif;
     padding: 0.5vw 1vw;
+}
+
+#ko-fi {
+    top: 7vw;
 }
 
 #modalBackground {

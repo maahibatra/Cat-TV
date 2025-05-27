@@ -12,12 +12,13 @@
 </head>
 <body style="overflow: hidden;">
     <canvas id="ctv" width="1700" height="1000"></canvas>
-    <button id="guide" onclick="window.open('guide.html', '_blank');">GUIDE</button>
+    <a href="guide.html"><button class="btn" id="guide">GUIDE</button></a>
+    <a href=""><button class="btn" id="ko-fi">KO-FI</button></a>
     <div id="modalBackground">
         <div id="modal">
             <div id="modalText">
                 Sorry if the videos take a second to load! (blame vercel)<br>
-                Also this site sucks on phone... I'm sorry T~T (and if you are, please click the knob once, otherwise the video doesn't work!)
+                Also this site sucks on phone... I'm sorry T~T
             </div>
             <button id="closeModal" onclick="modalBackground.style.display = 'none';">close</button>
         </div>
@@ -26,7 +27,7 @@
     <script>
         setTimeout(() => {
             modalBackground.style.display = "none";
-        }, 5000);
+        }, 10000);
     </script>
 </body>
 </html>
