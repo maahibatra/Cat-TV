@@ -41,5 +41,5 @@ All just accessories, hope you like them!
 
 ## Usage of AI - AI has been used in the creation of this project, specifically ChatGPT.
 
-- AI has been used to help me figure out how canvas works because I had never even touched this before.
-- AI has helped in troubleshooting errors.
+- Never touched the Canvas API before, so I needed help from AI to start out and understand the basics.
+- Got some troubles/errors in displaying the video and sounds, so I had to ask AI.
